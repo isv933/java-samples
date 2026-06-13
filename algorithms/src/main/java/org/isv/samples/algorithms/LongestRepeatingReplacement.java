@@ -19,32 +19,32 @@ import java.util.HashMap;
 import static java.lang.Math.max;
 
 public class LongestRepeatingReplacement {
-    public static int getMaxLength(String s, int k){
+    public static int getMaxLength(String s, int k) {
         var counter = new HashMap<Character, Integer>();
         var left = 0;
         var maxLen = 0;
         var maxFreq = 0;
 
-        for(var i = 0; i < s.length(); i++){
+        for (var i = 0; i < s.length(); i++) {
             var currentChar = s.charAt(i);
-            var curCount = counter.compute(currentChar, (key,count)-> count==null?1:count+1);
+            var curCount = counter.compute(currentChar, (key, count) -> count == null ? 1 : count + 1);
             maxFreq = max(maxFreq, curCount);
 
-           while ((i - left +1) - maxFreq>k) {
-               counter.computeIfPresent(s.charAt(left), (key,count)-> count-1);
-               left = left + 1;
-        }
-           maxLen = max(maxLen, i - left + 1);
+            while ((i - left + 1) - maxFreq > k) {
+                counter.computeIfPresent(s.charAt(left), (key, count) -> count - 1);
+                left = left + 1;
+            }
+            maxLen = max(maxLen, i - left + 1);
         }
 
         return maxLen;
     }
 
-    public static void test(){
-        System.out.printf("%d==4\n",getMaxLength("ABAB", 2));
-        System.out.printf("%d==5\n",getMaxLength("AABBB", 2));
-        System.out.printf("%d==3\n",getMaxLength("ABCB", 1));
-        System.out.printf("%d==6\n",getMaxLength("AABBCCC", 3));
+    public static void test() {
+        System.out.printf("%d==4\n", getMaxLength("ABAB", 2));
+        System.out.printf("%d==5\n", getMaxLength("AABBB", 2));
+        System.out.printf("%d==3\n", getMaxLength("ABCB", 1));
+        System.out.printf("%d==6\n", getMaxLength("AABBCCC", 3));
     }
 
 }

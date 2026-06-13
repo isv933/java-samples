@@ -20,11 +20,10 @@ public class BoundedBlockedQueueWithSemaphore<V> implements Queue<V> {
 
         try {
             usedItems.acquire();
-            var res  = queue.removeFirst();
+            var res = queue.removeFirst();
             freeItems.release();
             return res;
-        }
-        catch(InterruptedException ex){
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
 
         }
@@ -36,8 +35,7 @@ public class BoundedBlockedQueueWithSemaphore<V> implements Queue<V> {
             freeItems.acquire();
             queue.add(value);
             usedItems.release();
-        }
-        catch(InterruptedException ex){
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
 
         }

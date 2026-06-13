@@ -22,11 +22,11 @@ public class BoundedTaskExecutor implements TaskExecutor {
 
     public BoundedTaskExecutor(int maxThreadsNum, int maxTasksNum) {
 
-        if (maxThreadsNum<1) {
+        if (maxThreadsNum < 1) {
             throw new IllegalArgumentException("maxThreadsNum should be positive");
         }
 
-        if (maxTasksNum<1) {
+        if (maxTasksNum < 1) {
             throw new IllegalArgumentException("maxTasksNum should be positive");
         }
 
@@ -85,7 +85,7 @@ public class BoundedTaskExecutor implements TaskExecutor {
     private void joinThreadOnExit(Thread thread) {
         var interrupted = false;
 
-        while(true) {
+        while (true) {
             try {
                 thread.join();
                 break;
@@ -94,7 +94,7 @@ public class BoundedTaskExecutor implements TaskExecutor {
             }
         }
 
-        if (interrupted){
+        if (interrupted) {
             Thread.currentThread().interrupt();
 
         }
@@ -114,14 +114,14 @@ public class BoundedTaskExecutor implements TaskExecutor {
     }
 
     private void createNewThread() {
-     synchronized (threadsLock) {
-         if (isShouldWork() && threads.size() < maxThreadsNum) {
+        synchronized (threadsLock) {
+            if (isShouldWork() && threads.size() < maxThreadsNum) {
 
-             var thread = new Thread(this::processTasksQueue);
-             threads.addLast(thread);
-             thread.start();
-         }
-     }
+                var thread = new Thread(this::processTasksQueue);
+                threads.addLast(thread);
+                thread.start();
+            }
+        }
     }
 
     private void processTasksQueue() {
@@ -145,15 +145,14 @@ public class BoundedTaskExecutor implements TaskExecutor {
             }
         } catch (RuntimeException ex) {
             task.getResult().setError(ex);
-        }
-        finally {
+        } finally {
             decrementTasks();
 
         }
     }
 
 
-    private void incrementTasks(){
+    private void incrementTasks() {
         while (true) {
             var currentTasks = numTasks.get();
             if (currentTasks == maxTasksNum) {
@@ -166,7 +165,7 @@ public class BoundedTaskExecutor implements TaskExecutor {
         }
     }
 
-    private void decrementTasks(){
+    private void decrementTasks() {
         while (true) {
             var currentTasks = numTasks.get();
             if (numTasks.compareAndSet(currentTasks, currentTasks - 1)) {

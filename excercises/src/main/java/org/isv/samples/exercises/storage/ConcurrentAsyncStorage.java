@@ -12,15 +12,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoCloseable {
+public class ConcurrentAsyncStorage<K, V> implements AsyncStorage<K, V>, AutoCloseable {
 
     private final int maxCacheSize;
     private final int maxConcurrentStorageRequests;
     private final Duration maxShutdownTimeout;
-    private final Function<K,V> storageSupplier;
+    private final Function<K, V> storageSupplier;
 
     private final LRUCache cache = new LRUCache();
-    private final Object  cacheLock = new Object();
+    private final Object cacheLock = new Object();
     private final ExecutorService queueExecutor = Executors.newSingleThreadExecutor();
     private final ConcurrentHashMap<K, ArrayList<CompletableFuture<V>>> storageRequests = new ConcurrentHashMap<>();
     private final BlockingQueue<K> queue = new LinkedBlockingDeque<>();
@@ -38,12 +38,12 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
     }
 
 
-    private CompletableFuture<V> addStorageRequest(K key){
+    private CompletableFuture<V> addStorageRequest(K key) {
         var taskResult = new CompletableFuture<V>();
 
         var newTask = new AtomicBoolean();
 
-        storageRequests.compute(key, (k,v)->{
+        storageRequests.compute(key, (k, v) -> {
             if (v == null) {
                 newTask.set(true);
                 return new ArrayList<>(List.of(taskResult));
@@ -52,7 +52,7 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
             return v;
         });
 
-        if (newTask.get()){
+        if (newTask.get()) {
             queue.add(key);
         }
 
@@ -60,11 +60,11 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
     }
 
     @Override
-    public void close(){
+    public void close() {
         queueExecutor.shutdownNow();
 
         try {
-                queueTask.get();
+            queueTask.get();
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -77,8 +77,7 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
             try {
                 var taskRequest = queue.take();
                 storageTasksExecutor.execute(() -> executeStorageTask(taskRequest));
-            }
-            catch(InterruptedException ex) {
+            } catch (InterruptedException ex) {
                 break;
             }
         }
@@ -91,18 +90,17 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
         try {
             executor.shutdownNow();
             executor.awaitTermination(maxShutdownTimeout.toNanos(), TimeUnit.NANOSECONDS);
-        }
-        catch (InterruptedException ex) {
+        } catch (InterruptedException ex) {
             //no nothing special when interrupted, because it is shutdown process
         }
 
-        storageRequests.forEach((k,v)->
-                notifyClients(k,new StorageResult<>(null, new InterruptedException("Storage was interrupted"))));
+        storageRequests.forEach((k, v) ->
+                notifyClients(k, new StorageResult<>(null, new InterruptedException("Storage was interrupted"))));
     }
 
-    private void executeStorageTask(K key){
+    private void executeStorageTask(K key) {
         var result = getStorageResult(key);
-        notifyClients(key,result);
+        notifyClients(key, result);
     }
 
     private StorageResult<V> getStorageResult(K key) {
@@ -113,8 +111,7 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
             }
 
             return result;
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             return new StorageResult<>(null, ex);
         }
     }
@@ -125,8 +122,8 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
             return;
         }
 
-        for(var client: clients) {
-            if (result.exception()!=null) {
+        for (var client : clients) {
+            if (result.exception() != null) {
                 client.completeExceptionally(result.exception());
             } else {
                 client.complete(result.result());
@@ -144,8 +141,9 @@ public class ConcurrentAsyncStorage<K,V> implements AsyncStorage<K,V>, AutoClose
         LRUCache() {
             super(16, 0.75f, true);
         }
+
         protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-            return size()>maxCacheSize;
+            return size() > maxCacheSize;
         }
     }
 }

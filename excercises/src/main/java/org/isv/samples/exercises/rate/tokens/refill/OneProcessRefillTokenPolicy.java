@@ -11,6 +11,7 @@ public class OneProcessRefillTokenPolicy implements RefillTokenPolicy {
     private final TokenPolicy tokenPolicy;
     private final int maxTokens;
     private final double tokensRate;
+
     public OneProcessRefillTokenPolicy(InitialTokenPolicy initialTokenPolicy, TokenPolicy tokenPolicy, int maxTokens) {
 
         Objects.requireNonNull(initialTokenPolicy, "InitialTokensPolicy should not be null");

@@ -17,28 +17,27 @@ public class BoundedQueueTest {
         var maxQueueSize = 1;
 
         return Stream.of(new BoundedBlockedQueueWithWaitNotify<>(maxQueueSize),
-                         new BoundedBlockedQueueWithReentrantLock<>(maxQueueSize),
-                                new BoundedBlockedQueueWithSemaphore<>(maxQueueSize));
+                new BoundedBlockedQueueWithReentrantLock<>(maxQueueSize),
+                new BoundedBlockedQueueWithSemaphore<>(maxQueueSize));
     }
 
     @ParameterizedTest
     @MethodSource("singleBoundedQueue")
-    public void shouldWaitForPush(Queue<String> queue){
+    public void shouldWaitForPush(Queue<String> queue) {
         var start = new CountDownLatch(1);
 
-        var popWorker = CompletableFuture.supplyAsync(()->{
-                start.countDown();
-                return queue.take();
+        var popWorker = CompletableFuture.supplyAsync(() -> {
+            start.countDown();
+            return queue.take();
         });
 
         try {
             start.await();
             var testData = "xxx";
             queue.put(testData);
-            Assertions.assertEquals(testData,popWorker.join());
+            Assertions.assertEquals(testData, popWorker.join());
 
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             Assertions.fail();
 
         }
@@ -48,15 +47,10 @@ public class BoundedQueueTest {
     @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource("singleBoundedQueue")
-    public void shouldWaitIfFull(Queue<String> queue){
+    public void shouldWaitIfFull(Queue<String> queue) {
 
         queue.put("test123");
         //var pushWorker = CompletableFuture.runAsync(()-> queue.put("test1234"));
-
-
-
-
-
 
 
     }

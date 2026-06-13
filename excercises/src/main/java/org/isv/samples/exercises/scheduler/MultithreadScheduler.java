@@ -4,13 +4,12 @@ import java.time.Duration;
 
 public class MultithreadScheduler {
 
-    public void runTask(Runnable task, Duration period){
-
+    public void runTask(Runnable task, Duration period) {
 
 
     }
 
-    private void executeTask(){
+    private void executeTask() {
 
     }
 

@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 @RequiredArgsConstructor
-public class SynchronizedLRUCache<K,V> implements Cache<K,V>{
+public class SynchronizedLRUCache<K, V> implements Cache<K, V> {
     private final int maxCacheSize;
 
     private final Object lock = new Object();
@@ -23,7 +23,7 @@ public class SynchronizedLRUCache<K,V> implements Cache<K,V>{
     @Override
     public void put(K key, V value) {
         synchronized (lock) {
-            cache.put(key,value);
+            cache.put(key, value);
         }
 
     }
@@ -35,13 +35,13 @@ public class SynchronizedLRUCache<K,V> implements Cache<K,V>{
         }
     }
 
-    private class CacheCollection  extends LinkedHashMap<K,V> {
+    private class CacheCollection extends LinkedHashMap<K, V> {
         public CacheCollection() {
-            super(16,0.75f,true);
+            super(16, 0.75f, true);
         }
 
         @Override
-        protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
             return size() > maxCacheSize;
         }
     }

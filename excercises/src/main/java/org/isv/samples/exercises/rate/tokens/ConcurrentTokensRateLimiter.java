@@ -11,6 +11,7 @@ public class ConcurrentTokensRateLimiter implements RateLimiter {
 
     private final RefillTokenPolicy refillTokenPolicy;
     private final AtomicReference<TokenState> tokensState;
+
     public ConcurrentTokensRateLimiter(RefillTokenPolicy refillTokenPolicy) {
         Objects.requireNonNull(refillTokenPolicy, "refillTokenPolicy should not be null");
         this.refillTokenPolicy = refillTokenPolicy;

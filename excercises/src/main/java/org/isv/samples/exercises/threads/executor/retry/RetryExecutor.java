@@ -11,13 +11,13 @@ public class RetryExecutor {
     private final Duration maxTerminateTimeout;
     private final ExecutorService taskExecutor;
 
-    public RetryExecutor(int maxThreads, Duration maxTerminateTimeout){
+    public RetryExecutor(int maxThreads, Duration maxTerminateTimeout) {
 
-        if (maxThreads < 1){
+        if (maxThreads < 1) {
             throw new IllegalArgumentException("maxThreads should be greater then 0");
         }
 
-        if (maxTerminateTimeout==null || maxTerminateTimeout.isZero() || maxTerminateTimeout.isNegative()) {
+        if (maxTerminateTimeout == null || maxTerminateTimeout.isZero() || maxTerminateTimeout.isNegative()) {
             throw new IllegalArgumentException("maxTerminateTimeout should be not null, zero or negative");
         }
 
@@ -27,17 +27,16 @@ public class RetryExecutor {
 
     public <T> CompletableFuture<T> executeAsync(Supplier<T> task, RetryPolicy retryPolicy) {
         var result = new CompletableFuture<T>();
-        taskExecutor.execute(()->runTask(task, result, retryPolicy));
+        taskExecutor.execute(() -> runTask(task, result, retryPolicy));
         return result;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void shutdown(){
+    public void shutdown() {
         taskExecutor.shutdownNow();
         try {
             taskExecutor.awaitTermination(maxTerminateTimeout.toNanos(), TimeUnit.NANOSECONDS);
-        }
-        catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }

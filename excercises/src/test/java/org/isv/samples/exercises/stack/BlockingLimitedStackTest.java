@@ -16,11 +16,11 @@ public class BlockingLimitedStackTest {
         var result = new ArrayList<String>();
 
 
-        var popThread = CompletableFuture.runAsync(()->
-                {
-                    var res = stack.pop();
-                    result.add(res);
-                });
+        var popThread = CompletableFuture.runAsync(() ->
+        {
+            var res = stack.pop();
+            result.add(res);
+        });
 
         stack.push("test123");
         popThread.join();
@@ -30,18 +30,18 @@ public class BlockingLimitedStackTest {
     }
 
     @Test
-    public void limitShouldWork(){
+    public void limitShouldWork() {
         var maxSize = 1;
         var stack = new BlockingLimitedStack<String>(maxSize);
         var result = new ArrayList<String>();
-        var barrier  = new CountDownLatch(1);
+        var barrier = new CountDownLatch(1);
 
-        var pushes = IntStream.range(0,maxSize +1).mapToObj(x->CompletableFuture.runAsync(()->{
-                        var val = "a" +x;
-                        stack.push(val);
-                        result.add(val);
-                        barrier.countDown();
-                    })).toList();
+        var pushes = IntStream.range(0, maxSize + 1).mapToObj(x -> CompletableFuture.runAsync(() -> {
+            var val = "a" + x;
+            stack.push(val);
+            result.add(val);
+            barrier.countDown();
+        })).toList();
 
         try {
             barrier.await();
@@ -49,8 +49,7 @@ public class BlockingLimitedStackTest {
             Assertions.assertEquals(result.get(0), stack.pop());
             pushes.forEach(CompletableFuture::join);
             Assertions.assertEquals(result.get(1), stack.pop());
-        }
-        catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Assertions.fail(ex);
         }
     }

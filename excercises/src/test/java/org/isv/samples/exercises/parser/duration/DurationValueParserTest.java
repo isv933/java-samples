@@ -1,6 +1,5 @@
-package  org.isv.samples.exercises.parser.duration;
+package org.isv.samples.exercises.parser.duration;
 
-import org.isv.samples.exercises.parser.duration.DurationValueParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +15,6 @@ public class DurationValueParserTest {
 
         Assertions.assertFalse(res.isEmpty());
 
-   }
+    }
 
 }

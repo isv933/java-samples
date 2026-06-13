@@ -13,7 +13,7 @@ public class PromiseWait<T> implements Promise<T> {
     }
 
     @Override
-    public void competeException(Throwable ex){
+    public void competeException(Throwable ex) {
         this.exception = ex;
         complete();
     }
@@ -30,14 +30,13 @@ public class PromiseWait<T> implements Promise<T> {
                 }
             }
             throw new IllegalStateException(exception);
-        }
-        catch(InterruptedException ex){
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
         }
     }
 
-    private void complete(){
-        synchronized (lock){
+    private void complete() {
+        synchronized (lock) {
             lock.notifyAll();
             finished = true;
         }

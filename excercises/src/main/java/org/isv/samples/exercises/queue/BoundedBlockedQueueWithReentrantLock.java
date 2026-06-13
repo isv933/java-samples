@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @RequiredArgsConstructor
-public class BoundedBlockedQueueWithReentrantLock<V>  implements Queue<V> {
+public class BoundedBlockedQueueWithReentrantLock<V> implements Queue<V> {
 
     private final int maxQueueSize;
     private final Deque<V> queue = new ArrayDeque<>();
@@ -23,7 +23,7 @@ public class BoundedBlockedQueueWithReentrantLock<V>  implements Queue<V> {
         lock.lock();
         try {
 
-            while(queue.isEmpty()) {
+            while (queue.isEmpty()) {
                 notEmpty.await();
             }
 
@@ -31,11 +31,9 @@ public class BoundedBlockedQueueWithReentrantLock<V>  implements Queue<V> {
             notFull.signal();
 
             return res;
-        }
-        catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }
@@ -51,12 +49,10 @@ public class BoundedBlockedQueueWithReentrantLock<V>  implements Queue<V> {
             queue.addLast(value);
 
             notEmpty.signal();
-        }
-        catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
-        }
-        finally {
+        } finally {
             lock.unlock();
-      }
+        }
     }
 }

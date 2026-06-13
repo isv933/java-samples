@@ -1,8 +1,5 @@
 package org.isv.samples.exercises.threads;
 
-import org.isv.samples.exercises.threads.Promise;
-import org.isv.samples.exercises.threads.PromiseCountDown;
-import org.isv.samples.exercises.threads.PromiseWait;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,9 +11,10 @@ import java.util.stream.Stream;
 public class PromiseTest {
     static Stream<Promise<String>> promiseProvider() {
 
-        return Stream.of(new PromiseCountDown<String>(),new PromiseWait<>());
+        return Stream.of(new PromiseCountDown<String>(), new PromiseWait<>());
 
     }
+
     @ParameterizedTest
     @MethodSource("promiseProvider")
     public void shouldWaitResult(Promise<String> promise) {
@@ -26,9 +24,8 @@ public class PromiseTest {
         try {
             Assertions.assertEquals(testData, getResult.get());
             Assertions.assertEquals(testData, getResult.get());
-        }
-        catch (InterruptedException | ExecutionException ex) {
-           Assertions.fail();
+        } catch (InterruptedException | ExecutionException ex) {
+            Assertions.fail();
         }
     }
 
@@ -37,15 +34,14 @@ public class PromiseTest {
     public void shouldExceptionResult(Promise<String> promise) {
         var getResult = CompletableFuture.supplyAsync(promise::get);
         promise.competeException(new InterruptedException());
-        Assertions.assertThrows(IllegalStateException.class, ()->getExceptionResult(getResult));
-        Assertions.assertThrows(IllegalStateException.class, ()->getExceptionResult(getResult));
+        Assertions.assertThrows(IllegalStateException.class, () -> getExceptionResult(getResult));
+        Assertions.assertThrows(IllegalStateException.class, () -> getExceptionResult(getResult));
     }
 
-    private void getExceptionResult(CompletableFuture<String> action){
+    private void getExceptionResult(CompletableFuture<String> action) {
         try {
             action.get();
-        }
-        catch (InterruptedException | ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             if (ex.getCause().getClass().equals(IllegalStateException.class)) {
                 throw (IllegalStateException) ex.getCause();
             }

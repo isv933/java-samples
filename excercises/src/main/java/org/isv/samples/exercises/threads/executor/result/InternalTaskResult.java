@@ -23,7 +23,7 @@ public class InternalTaskResult<T> implements TaskResult<T> {
     @Override
     public void join() {
         try {
-             readyResult.await();
+            readyResult.await();
 
             if (exception != null) {
                 throw exception;

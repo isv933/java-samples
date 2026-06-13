@@ -5,8 +5,8 @@ import java.util.HashMap;
 public class TwoSingleNum {
     public static class Solution {
         public int[] twoSum(int[] nums, int target) {
-            var seen = new HashMap<Integer,Integer>();
-            for(var  i =0;i < nums.length; i++){
+            var seen = new HashMap<Integer, Integer>();
+            for (var i = 0; i < nums.length; i++) {
                 var diff = target - nums[i];
 
                 if (seen.containsKey(diff)) {

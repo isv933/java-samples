@@ -12,7 +12,7 @@ public class BoundedBlockedQueueWithWaitNotify<V> implements Queue<V> {
     private final Deque<V> queue = new ArrayDeque<>();
     private final Object lock = new Object();
 
-    public  V take() {
+    public V take() {
 
         try {
             synchronized (lock) {
@@ -23,8 +23,7 @@ public class BoundedBlockedQueueWithWaitNotify<V> implements Queue<V> {
                 lock.notifyAll();
                 return queue.removeFirst();
             }
-        }
-        catch(InterruptedException ex){
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
         }
     }

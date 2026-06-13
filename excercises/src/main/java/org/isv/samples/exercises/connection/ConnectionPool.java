@@ -20,7 +20,7 @@ public class ConnectionPool<C extends AutoCloseable> {
     public ConnectionPool(Supplier<C> connectionFactory, int maxConnections) {
         Objects.requireNonNull(connectionFactory);
 
-        if (maxConnections<1) {
+        if (maxConnections < 1) {
             throw new IllegalArgumentException("You should specify maxConnections at least 1");
         }
 
@@ -29,13 +29,13 @@ public class ConnectionPool<C extends AutoCloseable> {
     }
 
 
-    public RemoteConnection<C> connect(){
+    public RemoteConnection<C> connect() {
         return getConnection();
     }
 
-    public void shutdown(){
+    public void shutdown() {
         synchronized (lock) {
-            for(var connection : pool){
+            for (var connection : pool) {
                 connection.destroy();
             }
             pool.clear();
@@ -48,19 +48,19 @@ public class ConnectionPool<C extends AutoCloseable> {
             freeConnections.acquire();
 
             synchronized (lock) {
-            for (var connection : pool) {
-                if (!connection.isBusy()) {
-                    connection.setBusy(true);
-                    return connection;
+                for (var connection : pool) {
+                    if (!connection.isBusy()) {
+                        connection.setBusy(true);
+                        return connection;
+                    }
                 }
             }
-        }
 
-        var newConnection = ConnectionWrapper.<C>builder()
-                .originalConnection(connectionFactory.get()).busy(true)
-                        .lock(lock).freeConnections(freeConnections).build();
+            var newConnection = ConnectionWrapper.<C>builder()
+                    .originalConnection(connectionFactory.get()).busy(true)
+                    .lock(lock).freeConnections(freeConnections).build();
 
-        synchronized (lock) {
+            synchronized (lock) {
                 if (stopped) {
                     newConnection.destroy();
                     throw new IllegalStateException("connect to closed pool");
@@ -68,15 +68,12 @@ public class ConnectionPool<C extends AutoCloseable> {
                 pool.add(newConnection);
                 return newConnection;
             }
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IllegalStateException(e);
-        }
-        catch(IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             throw ex;
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             freeConnections.release();
             throw ex;
         }
@@ -84,7 +81,7 @@ public class ConnectionPool<C extends AutoCloseable> {
 
     @Data
     @Builder
-    private static class ConnectionWrapper<Connection extends AutoCloseable> implements RemoteConnection<Connection>{
+    private static class ConnectionWrapper<Connection extends AutoCloseable> implements RemoteConnection<Connection> {
 
         private final Connection originalConnection;
         private final Object lock;
@@ -100,8 +97,7 @@ public class ConnectionPool<C extends AutoCloseable> {
         public void destroy() {
             try {
                 originalConnection.close();
-            }
-            catch(Exception ex){
+            } catch (Exception ex) {
                 //do nothing, because of shutdown process
             }
         }

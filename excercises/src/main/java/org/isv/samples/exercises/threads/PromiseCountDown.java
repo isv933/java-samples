@@ -2,7 +2,7 @@ package org.isv.samples.exercises.threads;
 
 import java.util.concurrent.CountDownLatch;
 
-public class PromiseCountDown<T> implements Promise<T>{
+public class PromiseCountDown<T> implements Promise<T> {
 
     private final CountDownLatch latch = new CountDownLatch(1);
     private T result;
@@ -15,7 +15,7 @@ public class PromiseCountDown<T> implements Promise<T>{
     }
 
     @Override
-    public void competeException(Throwable ex){
+    public void competeException(Throwable ex) {
         this.exception = ex;
         complete();
     }
@@ -24,17 +24,16 @@ public class PromiseCountDown<T> implements Promise<T>{
     public T get() {
         try {
             latch.await();
-            if (result!=null) {
+            if (result != null) {
                 return result;
             }
             throw new IllegalStateException(exception);
-        }
-        catch(InterruptedException ex){
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
         }
     }
 
-    private void complete(){
+    private void complete() {
         latch.countDown();
     }
 }

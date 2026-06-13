@@ -9,7 +9,7 @@ public class MergeIntervals {
     public static int[][] merge(int[][] intervals) {
         var result = new ArrayList<int[]>();
 
-        if (intervals.length==0){
+        if (intervals.length == 0) {
             return new int[][]{};
         }
 
@@ -33,17 +33,17 @@ public class MergeIntervals {
         return result.toArray(new int[result.size()][]);
     }
 
-    public static void test(){
-        System.out.println(arraysToString(MergeIntervals.merge(new int[][]{{1,3},{2,6},{8,10},{15,18}})));
-        System.out.println(arraysToString(MergeIntervals.merge(new int[][]{{1,4},{4,5}})));
-        System.out.println(arraysToString(MergeIntervals.merge(new int[][]{{4,7},{1,4}})));
+    public static void test() {
+        System.out.println(arraysToString(MergeIntervals.merge(new int[][]{{1, 3}, {2, 6}, {8, 10}, {15, 18}})));
+        System.out.println(arraysToString(MergeIntervals.merge(new int[][]{{1, 4}, {4, 5}})));
+        System.out.println(arraysToString(MergeIntervals.merge(new int[][]{{4, 7}, {1, 4}})));
     }
 
     private static String arraysToString(int[][] array) {
         var stringJoiner = new StringJoiner(",", "[", "]");
-        for(var i = 0; i < array.length; i++) {
+        for (var i = 0; i < array.length; i++) {
             var valueJoiner = new StringJoiner(",", "[", "]");
-            for(var j = 0; j < array[i].length; j++) {
+            for (var j = 0; j < array[i].length; j++) {
                 valueJoiner.add(String.valueOf(array[i][j]));
             }
             stringJoiner.add(valueJoiner.toString());

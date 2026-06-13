@@ -1,6 +1,5 @@
 package org.isv.samples.exercises;
 
-import org.isv.samples.exercises.MemoryKeyValueStore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

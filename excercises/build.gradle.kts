@@ -7,7 +7,7 @@
  */
 
 plugins {
-   `java-library`
+    `java-library`
 }
 
 

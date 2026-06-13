@@ -8,18 +8,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class BlockingLimitedStack<T> {
 
-    @Data
-    @Builder
-    private static class StackEntry<T> {
-        private final T val;
-        private  final StackEntry<T> prev;
-    }
     private final AtomicReference<StackEntry<T>> head = new AtomicReference<>();
     private final Semaphore freeSlots;
     private final Semaphore availableItems;
-
     public BlockingLimitedStack(int maxStackSize) {
-        if (maxStackSize < 1 ){
+        if (maxStackSize < 1) {
             throw new IllegalArgumentException("maxStackSize cannot be less than 1");
         }
 
@@ -29,7 +22,7 @@ public class BlockingLimitedStack<T> {
 
     public void push(T value) {
         allocateOrWait();
-        while(true) {
+        while (true) {
             var latest = head.get();
             var newElement = StackEntry.<T>builder().prev(latest).val(value).build();
             if (head.compareAndSet(latest, newElement)) {
@@ -38,6 +31,7 @@ public class BlockingLimitedStack<T> {
             }
         }
     }
+
     public T pop() {
         waitLatest();
 
@@ -56,20 +50,25 @@ public class BlockingLimitedStack<T> {
     }
 
     private void waitLatest() {
-        try{
-             availableItems.acquire();
-        }
-        catch(InterruptedException ex) {
+        try {
+            availableItems.acquire();
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
         }
     }
 
     private void allocateOrWait() {
         try {
-          freeSlots.acquire();
-        }
-        catch(InterruptedException ex) {
+            freeSlots.acquire();
+        } catch (InterruptedException ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    @Data
+    @Builder
+    private static class StackEntry<T> {
+        private final T val;
+        private final StackEntry<T> prev;
     }
 }

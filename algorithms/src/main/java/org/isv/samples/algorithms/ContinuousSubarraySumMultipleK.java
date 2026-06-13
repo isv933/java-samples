@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class ContinuousSubarraySumMultipleK {
     public static boolean isHasMultipleKArray(int[] input, int k) {
-        if (input == null){
+        if (input == null) {
             return false;
         }
         var index = new HashMap<Integer, Integer>();

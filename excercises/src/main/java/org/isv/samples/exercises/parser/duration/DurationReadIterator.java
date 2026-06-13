@@ -13,13 +13,13 @@ public class DurationReadIterator implements Iterator<DurationValue> {
     private final DurationValueParser durationValueParser;
     private final List<DurationValue> parsedValues = new LinkedList<>();
 
-    public static DurationReadIterator of(ReadableByteChannel channel, int maxExpressionLength){
-        return new DurationReadIterator(channel, maxExpressionLength);
-    }
-
-    private DurationReadIterator(ReadableByteChannel channel, int maxExpressionLength){
+    private DurationReadIterator(ReadableByteChannel channel, int maxExpressionLength) {
         this.channel = channel;
         this.durationValueParser = DurationValueParser.of(maxExpressionLength);
+    }
+
+    public static DurationReadIterator of(ReadableByteChannel channel, int maxExpressionLength) {
+        return new DurationReadIterator(channel, maxExpressionLength);
     }
 
     @Override
@@ -41,13 +41,12 @@ public class DurationReadIterator implements Iterator<DurationValue> {
             return false;
         }
         try {
-            while ( parsedValues.isEmpty() || channel.read(readBuffer) > 0) {
+            while (parsedValues.isEmpty() || channel.read(readBuffer) > 0) {
                 readBuffer.flip();
                 parsedValues.addAll(durationValueParser.parseDurations(readBuffer));
                 readBuffer.clear();
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

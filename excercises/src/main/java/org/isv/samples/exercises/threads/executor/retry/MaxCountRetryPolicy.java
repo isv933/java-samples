@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.Duration;
 
 @RequiredArgsConstructor
-public class MaxCountRetryPolicy implements  RetryPolicy{
+public class MaxCountRetryPolicy implements RetryPolicy {
     private final Config config;
     private int retryCount = 0;
 
@@ -21,8 +21,7 @@ public class MaxCountRetryPolicy implements  RetryPolicy{
 
         try {
             Thread.sleep(config.getRetryDelay().toMillis());
-        }
-        catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return false;
         }

@@ -8,37 +8,29 @@ public class TopKFrequentWords {
     public static List<String> topKFrequent(String[] words, int k) {
         var hmap = new HashMap<String, Integer>();
         var heap = new PriorityQueue<>
-                    (Comparator.<Map.Entry<String,Integer>>comparingInt(x->x.getValue()).reversed()
-                                    .thenComparing(x->x.getKey()));
-        for(var word : words) {
-            hmap.compute(word, (key,value)->value==null?1: value+1);
+                (Comparator.<Map.Entry<String, Integer>>comparingInt(Map.Entry::getValue).reversed()
+                        .thenComparing(Map.Entry::getKey));
+        for (var word : words) {
+            hmap.compute(word, (key, value) -> value == null ? 1 : value + 1);
         }
 
         heap.addAll(hmap.entrySet());
 
-        return heap.stream().limit(k).map(x->x.getKey()).toList();
-
-//        var result = new ArrayList<String>();
-//        for(var i = 0; !heap.isEmpty() && i < k; i++){
-//            result.add(heap.poll().getKey());
-//
-//        }
-//
-//        return result;
-    }
-
-    public static void test(){
-            System.out.println(toString(topKFrequent(new String[]{"i","love","leetcode","i","love","coding"},2)));
-    }
-
-
-    private static String toString(Collection<String> words){
-
-        return words.stream().collect(Collectors.joining(",", "[","]"));
-
+        return heap.stream().limit(k).map(Map.Entry::getKey).toList();
 
     }
 
+    public static void test() {
+        System.out.println(toString(topKFrequent(new String[]{"i", "love", "leetcode", "i", "love", "coding"}, 2)));
+    }
+
+
+    private static String toString(Collection<String> words) {
+
+        return words.stream().collect(Collectors.joining(",", "[", "]"));
+
+
+    }
 
 
 }
