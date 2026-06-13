@@ -1,7 +1,7 @@
 plugins {
     java
     idea
-
+    jacoco
 }
 
 java {
@@ -21,4 +21,5 @@ allprojects {
 
 subprojects {
     apply(plugin="idea")
+    apply(plugin = "jacoco")
 }
