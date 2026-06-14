@@ -5,11 +5,9 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/7.6.4/userguide/building_java_projects.html
  */
-
 plugins {
-    `java-library`
+    java
 }
-
 
 dependencies {
     implementation("com.google.guava:guava:32.1.2-jre")
@@ -24,5 +22,5 @@ dependencies {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+    finalizedBy(tasks.jacocoTestReport)
 }

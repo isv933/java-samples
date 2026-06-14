@@ -10,7 +10,6 @@ plugins {
     application
 }
 
-
 dependencies {
     implementation("com.google.guava:guava:32.1.2-jre")
     compileOnly("org.projectlombok:lombok:1.18.42")

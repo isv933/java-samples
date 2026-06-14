@@ -1,3 +1,4 @@
 rootProject.name = "java-samples"
 include("algorithms")
-include("excercises")
+include("exercises")
+include("url-shortener")

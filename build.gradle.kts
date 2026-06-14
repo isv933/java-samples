@@ -1,13 +1,6 @@
 plugins {
-    java
     idea
     jacoco
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
 }
 
 allprojects {
@@ -22,4 +15,10 @@ allprojects {
 subprojects {
     apply(plugin="idea")
     apply(plugin = "jacoco")
+    apply(plugin = "java")
+    configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
 }
