@@ -1,6 +1,5 @@
 plugins {
     idea
-    jacoco
 }
 
 allprojects {
