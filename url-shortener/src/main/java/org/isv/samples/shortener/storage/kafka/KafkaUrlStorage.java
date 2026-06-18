@@ -22,6 +22,7 @@ public class KafkaUrlStorage implements UrlStorage {
     @Override
     public void addUrl(UrlInfo urlInfo) {
         kafkaTemplate.send(storeTopicName, urlInfo.getId(), urlInfo);
+        kafkaTemplate.flush(); //TODO: Not optimal
     }
 
     @Override
@@ -35,3 +36,4 @@ public class KafkaUrlStorage implements UrlStorage {
         return Optional.ofNullable(store.get(id));
     }
 }
+

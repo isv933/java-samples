@@ -41,6 +41,7 @@ public class KafkaConfiguration {
         return properties;
     }
 
+    @Bean
     public KafkaStreams getKafkaStreams(ApplicationSettings settings,
                                         @Qualifier("kafka") Properties properties) {
         var streamsBuilder = new StreamsBuilder();
@@ -51,12 +52,14 @@ public class KafkaConfiguration {
         return kafkaStreams;
     }
 
+    @Bean
     public KafkaTemplate<String, UrlInfo> getKafkaTemplate(ProducerFactory<String, UrlInfo> producerFactory) {
 
         return new KafkaTemplate<>(producerFactory);
     }
 
 
+    @Bean
     public ProducerFactory<String, UrlInfo> producerFactory(ApplicationSettings settings) {
         return new DefaultKafkaProducerFactory<>(
                 new java.util.HashMap<>() {{
