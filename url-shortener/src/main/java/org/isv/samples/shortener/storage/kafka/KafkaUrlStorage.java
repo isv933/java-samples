@@ -9,6 +9,7 @@ import org.isv.samples.shortener.storage.UrlStorage;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 public class KafkaUrlStorage implements UrlStorage {
@@ -21,8 +22,13 @@ public class KafkaUrlStorage implements UrlStorage {
 
     @Override
     public void addUrl(UrlInfo urlInfo) {
-        kafkaTemplate.send(storeTopicName, urlInfo.getId(), urlInfo);
-        kafkaTemplate.flush(); //TODO: Not optimal
+        try {
+
+            kafkaTemplate.send(storeTopicName, urlInfo.getId(), urlInfo).get();
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new IllegalStateException(ex);
+        }
+
     }
 
     @Override
