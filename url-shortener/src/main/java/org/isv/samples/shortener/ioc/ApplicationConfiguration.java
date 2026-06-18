@@ -7,12 +7,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 @Import({DatabaseConfiguration.class, KafkaConfiguration.class})
 public class ApplicationConfiguration {
 
     @Bean
+    @Primary
     UrlStorage getUrlStorage(ApplicationSettings settings, ApplicationContext context) {
         return context.getBean(settings.getStorageType(), UrlStorage.class);
     }
