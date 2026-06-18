@@ -11,4 +11,5 @@ import org.springframework.stereotype.Component;
 public class ApplicationSettings {
     private String baseUrl;
     private String storageType;
+    private KafkaSettings kafka = new KafkaSettings();
 }
