@@ -41,16 +41,13 @@ class KafkaUrlStorageTest {
 
     @Test
     public void shouldAddUrl() {
-        var testUrl = UrlInfo.builder()
-                .Id(UUID.randomUUID().toString()).Url("http://sample").build();
-
+        var testUrl = UrlInfo.builder().Id(UUID.randomUUID().toString()).Url("http://sample").build();
 
         var sendResult = mock(CompletableFuture.class);
 
         when(kafkaTemplate.send(any(), any(), any())).thenReturn(sendResult);
         kafkaStorage.addUrl(testUrl);
-        verify(kafkaTemplate, times(1))
-                .send(topicName, testUrl.getId(), testUrl);
+        verify(kafkaTemplate, times(1)).send(topicName, testUrl.getId(), testUrl);
 
         try {
             verify(sendResult, times(1)).get();
@@ -64,11 +61,9 @@ class KafkaUrlStorageTest {
         var id = UUID.randomUUID().toString();
         when(streams.store(any())).thenReturn(store);
 
-        var testUrl = UrlInfo.builder()
-                .Id(UUID.randomUUID().toString()).Url("http://sample").build();
+        var testUrl = UrlInfo.builder().Id(UUID.randomUUID().toString()).Url("http://sample").build();
 
         when(store.get(id)).thenReturn(testUrl);
-
 
         Assertions.assertEquals(testUrl, kafkaStorage.getUrl(id).orElseThrow());
         Assertions.assertTrue(kafkaStorage.getUrl("not_exist").isEmpty());
