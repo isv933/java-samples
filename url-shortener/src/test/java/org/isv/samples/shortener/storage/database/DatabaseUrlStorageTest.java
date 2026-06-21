@@ -20,7 +20,9 @@ public class DatabaseUrlStorageTest {
     @Test
     public void shouldAddUrl() {
         var storage = new DatabaseUrlStorage(repository);
-        var url = new UrlInfo(UUID.randomUUID().toString(), "http://sample");
+        var url = UrlInfo.builder()
+                .Id(UUID.randomUUID().toString()).Url("http://sample").build();
+
         storage.addUrl(url);
         verify(repository, times(1)).insert(url);
     }
@@ -28,7 +30,8 @@ public class DatabaseUrlStorageTest {
     @Test
     public void shouldGetUrl() {
         var storage = new DatabaseUrlStorage(repository);
-        var url = new UrlInfo(UUID.randomUUID().toString(), "http://sample");
+        var url = UrlInfo.builder()
+                .Id(UUID.randomUUID().toString()).Url("http://sample").build();
         when(storage.getUrl(url.getId())).thenReturn(Optional.of(url));
         Assertions.assertEquals(Optional.of(url), storage.getUrl(url.getId()));
 

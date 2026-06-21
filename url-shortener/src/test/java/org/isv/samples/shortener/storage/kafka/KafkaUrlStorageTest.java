@@ -41,7 +41,10 @@ class KafkaUrlStorageTest {
 
     @Test
     public void shouldAddUrl() {
-        var testUrl = new UrlInfo(UUID.randomUUID().toString(), "http://url");
+        var testUrl = UrlInfo.builder()
+                .Id(UUID.randomUUID().toString()).Url("http://sample").build();
+
+
         var sendResult = mock(CompletableFuture.class);
 
         when(kafkaTemplate.send(any(), any(), any())).thenReturn(sendResult);
@@ -61,7 +64,9 @@ class KafkaUrlStorageTest {
         var id = UUID.randomUUID().toString();
         when(streams.store(any())).thenReturn(store);
 
-        var testUrl = new UrlInfo(UUID.randomUUID().toString(), "http://url");
+        var testUrl = UrlInfo.builder()
+                .Id(UUID.randomUUID().toString()).Url("http://sample").build();
+
         when(store.get(id)).thenReturn(testUrl);
 
 
@@ -71,7 +76,6 @@ class KafkaUrlStorageTest {
 
                 arg.storeName().equals(storeName) &&
                         arg.queryableStoreType() instanceof QueryableStoreTypes.KeyValueStoreType));
-
 
     }
 
