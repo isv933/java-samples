@@ -14,7 +14,7 @@ class InsertRepositoryImplTest {
     void shouldInsert() {
         var jdbcTemplate = mock(JdbcAggregateTemplate.class);
         var insertRepository = new InsertRepositoryImpl(jdbcTemplate);
-        var url = new UrlInfo(UUID.randomUUID().toString(),"http://");
+        var url = new UrlInfo(UUID.randomUUID().toString(), "http://");
         insertRepository.insert(url);
         verify(jdbcTemplate, times(1)).insert(url);
     }
