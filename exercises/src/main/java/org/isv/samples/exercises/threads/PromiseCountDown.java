@@ -1,39 +1,48 @@
 package org.isv.samples.exercises.threads;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PromiseCountDown<T> implements Promise<T> {
 
     private final CountDownLatch latch = new CountDownLatch(1);
-    private T result;
-    private Throwable exception;
+    private final AtomicReference<State<T>> completeState = new AtomicReference<>();
 
     @Override
     public void complete(T result) {
-        this.result = result;
-        complete();
+        complete(new State<>(result,null));
     }
 
     @Override
     public void competeException(Throwable ex) {
-        this.exception = ex;
-        complete();
+        complete(new State<>(null, ex));
     }
 
     @Override
     public T get() {
         try {
             latch.await();
-            if (result != null) {
-                return result;
+            var state = this.completeState.get();
+
+            if (state.ex()!=null) {
+                throw new IllegalStateException(state.ex());
             }
-            throw new IllegalStateException(exception);
+            return state.result();
+
         } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
             throw new IllegalStateException(ex);
         }
     }
 
-    private void complete() {
-        latch.countDown();
+    private void complete(State<T> state) {
+        if (!this.completeState.compareAndSet(null, state)){
+            throw new IllegalStateException("Promise is already completed");
+        }
+       latch.countDown();
+    }
+
+    record State<T> (T result, Throwable ex)  {
+
     }
 }

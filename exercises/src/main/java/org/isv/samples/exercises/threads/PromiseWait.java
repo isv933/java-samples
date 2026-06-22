@@ -1,44 +1,55 @@
 package org.isv.samples.exercises.threads;
 
+import java.util.Objects;
+
 public class PromiseWait<T> implements Promise<T> {
     private final Object lock = new Object();
-    private T result;
-    private Throwable exception;
-    private boolean finished;
+    private State<T> completeState;
 
     @Override
     public void complete(T result) {
-        this.result = result;
-        complete();
+        complete(new State<>(result, null));
     }
 
     @Override
     public void competeException(Throwable ex) {
-        this.exception = ex;
-        complete();
+        Objects.requireNonNull(ex, "Exception should not be null");
+        complete(new State<>(null, ex));
     }
 
     @Override
     public T get() {
         try {
             synchronized (lock) {
-                if (!finished) {
-                    lock.wait();
-                }
-                if (result != null) {
-                    return result;
-                }
+                    while(completeState == null) {
+                        lock.wait();
+                    }
+
+                    if (completeState.ex()!=null){
+                        throw new IllegalStateException(completeState.ex());
+                    }
+                    return completeState.result();
             }
-            throw new IllegalStateException(exception);
         } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
             throw new IllegalStateException(ex);
         }
     }
 
-    private void complete() {
+    private void complete(State<T> state) {
         synchronized (lock) {
+
+            if (completeState!=null) {
+                throw new IllegalStateException("Promise is already completed");
+            }
+
+            completeState = state;
             lock.notifyAll();
-            finished = true;
         }
     }
+
+    record State<T> (T result, Throwable ex) {
+
+    }
+
 }
