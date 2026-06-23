@@ -13,8 +13,6 @@ import java.time.Duration;
 import java.util.UUID;
 
 class KafkaStoreTopologyBuilderTest {
-
-
     @Test
     public void testTopology() {
         var streamBuilder = new StreamsBuilder();
