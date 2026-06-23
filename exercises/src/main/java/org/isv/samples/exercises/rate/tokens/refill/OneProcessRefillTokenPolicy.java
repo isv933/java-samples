@@ -35,7 +35,7 @@ public class OneProcessRefillTokenPolicy implements RefillTokenPolicy {
         return switch (initialTokenPolicy) {
             case EMPTY -> 0;
             case FULL -> maxTokens;
-            case ONE_PERIOD -> tokenPolicy.period().toNanos() * tokenPolicy.numTokenInPeriod();
+            case ONE_PERIOD -> tokenPolicy.numTokenInPeriod();
         };
     }
 

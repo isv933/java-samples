@@ -4,6 +4,7 @@ import org.isv.samples.exercises.rate.RateLimiter;
 import org.isv.samples.exercises.rate.tokens.refill.RefillTokenPolicy;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -15,7 +16,7 @@ public class ConcurrentTokensRateLimiter implements RateLimiter {
     public ConcurrentTokensRateLimiter(RefillTokenPolicy refillTokenPolicy) {
         Objects.requireNonNull(refillTokenPolicy, "refillTokenPolicy should not be null");
         this.refillTokenPolicy = refillTokenPolicy;
-        this.tokensState = new AtomicReference<>(createTokensState(refillTokenPolicy.getInitialTokens(), System.nanoTime()));
+        this.tokensState = new AtomicReference<>(createTokensState(refillTokenPolicy.getInitialTokens(), Instant.now()));
     }
 
     @Override
@@ -23,9 +24,9 @@ public class ConcurrentTokensRateLimiter implements RateLimiter {
         while (true) {
 
             var currentTokensState = tokensState.get();
-            var currentTime = System.nanoTime();
+            var currentTime = Instant.now();
             var availableTokens = refillTokenPolicy.getTokens(currentTokensState.numTokens(),
-                    Duration.ofNanos(currentTime - currentTokensState.latestRefillTime()));
+                    Duration.between(currentTime, currentTokensState.latestRefillTime()));
 
             if (availableTokens < 1) {
                 return false;
@@ -42,11 +43,11 @@ public class ConcurrentTokensRateLimiter implements RateLimiter {
         }
     }
 
-    private TokenState createTokensState(long tokens, long refillTime) {
+    private TokenState createTokensState(long tokens, Instant refillTime) {
         return new TokenState(tokens, refillTime);
     }
 
-    private record TokenState(long numTokens, long latestRefillTime) {
+    private record TokenState(long numTokens, Instant latestRefillTime) {
     }
 
 }
