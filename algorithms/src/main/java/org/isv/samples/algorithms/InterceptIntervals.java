@@ -9,7 +9,15 @@ import java.util.stream.Collectors;
 
 public class InterceptIntervals {
 
-    private static List<Interval> intersect(List<Interval> user1, List<Interval> user2) {
+    public record Interval(int from, int to) {
+
+        public String toString() {
+            return from() + ":" + to();
+        }
+
+    }
+
+    public static List<Interval> intersect(List<Interval> user1, List<Interval> user2) {
         var result = new ArrayList<Interval>();
         var left = new IntervalIter(user1);
         var right = new IntervalIter(user2);
@@ -39,7 +47,24 @@ public class InterceptIntervals {
         return result;
     }
 
-    ;
+    private static class IntervalIter {
+        private final Iterator<Interval> iterator;
+        @Getter
+        private Interval value;
+
+        public IntervalIter(List<Interval> interval) {
+            iterator = interval.iterator();
+            next();
+        }
+
+        public boolean hasValue() {
+            return value != null;
+        }
+
+        public void next() {
+            value = !iterator.hasNext() ? null : iterator.next();
+        }
+    }
 
     public static void test() {
 
@@ -74,31 +99,5 @@ public class InterceptIntervals {
 
     }
 
-    public record Interval(int from, int to) {
-
-        public String toString() {
-            return from() + ":" + to();
-        }
-
-    }
-
-    private static class IntervalIter {
-        private final Iterator<Interval> iterator;
-        @Getter
-        private Interval value;
-
-        public IntervalIter(List<Interval> interval) {
-            iterator = interval.iterator();
-            next();
-        }
-
-        public boolean hasValue() {
-            return value != null;
-        }
-
-        public void next() {
-            value = !iterator.hasNext() ? null : iterator.next();
-        }
-    }
 
 }
