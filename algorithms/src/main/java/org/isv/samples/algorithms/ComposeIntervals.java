@@ -32,6 +32,7 @@ public class ComposeIntervals {
     }
 
     public static void test(){
+        System.out.println(composeIntervals(new int[]{}));
         System.out.println(composeIntervals(new int[]{0}));
         System.out.println(composeIntervals(new int[]{0,1}));
         System.out.println(composeIntervals(new int[]{0,1,2,4}));
