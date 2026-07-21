@@ -4,26 +4,8 @@
 package org.isv.samples.algorithms;
 
 public class App {
-
-    public static int divideTwoNumbers(int digit, int divider) {
-        var result = 0;
-        var reminder = digit;
-
-        for(var shift = 32; shift>=0 && reminder>divider; shift--){
-            var shiftResult = (long) divider << shift;
-            if (shiftResult > reminder) {
-                continue;
-            }
-            var difference = reminder - (int) shiftResult;
-            result+=1 << shift;
-            reminder = difference;
-        }
-
-        return result;
-    }
-
     public static void main(String...args) {
-        SearchIn2DMatrix.test();
+        FindAllAnagrams.test();
     }
 
 }
