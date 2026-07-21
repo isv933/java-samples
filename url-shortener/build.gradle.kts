@@ -8,6 +8,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.postgresql:postgresql")
+    implementation("com.clickhouse:clickhouse-jdbc:0.9.8:all")
+    implementation("io.github.pelenthium:clickhouse-dialect-spring-boot-starter:1.2.0")
     implementation("org.apache.kafka:kafka-streams")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

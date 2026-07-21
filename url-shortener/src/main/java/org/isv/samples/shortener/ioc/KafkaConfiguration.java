@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -23,9 +24,8 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.Properties;
 
 @Configuration
-@Lazy
+@Profile("kafka")
 public class KafkaConfiguration {
-
 
     @Bean("kafka")
     public Properties getKafkaProperties(ApplicationSettings settings) {
@@ -71,7 +71,7 @@ public class KafkaConfiguration {
         );
     }
 
-    @Bean("kafka")
+    @Bean
     public UrlStorage getUrlStorage(ApplicationSettings settings, KafkaStreams streams,
                                     KafkaTemplate<String, UrlInfo> kafkaTemplate) {
 

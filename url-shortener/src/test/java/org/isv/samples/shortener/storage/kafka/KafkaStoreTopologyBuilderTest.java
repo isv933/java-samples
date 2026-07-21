@@ -28,7 +28,7 @@ class KafkaStoreTopologyBuilderTest {
 
             var store = testDriver.<String, UrlInfo>getKeyValueStore(settings.getShortenerStoreName());
             var testUrl = UrlInfo.builder()
-                    .Id(UUID.randomUUID().toString()).Url("http://sample").build();
+                    .id(UUID.randomUUID().toString()).url("http://sample").build();
 
             inputTopic.pipeInput(testUrl.getId(), testUrl);
 

@@ -15,7 +15,7 @@ public class UrlShortenerService {
 
     public String addUrl(String originalUrl) {
         var dbUrl = UrlInfo.builder()
-                .Id(UUID.randomUUID().toString()).Url(originalUrl).build();
+                .id(UUID.randomUUID().toString()).url(originalUrl).build();
         storage.addUrl(dbUrl);
         return generateShortUrl(dbUrl);
     }

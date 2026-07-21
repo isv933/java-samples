@@ -3,10 +3,29 @@
  */
 package org.isv.samples.algorithms;
 
-
 public class App {
-    public static void main(String[] args) {
-        ComposeIntervals.test();
+
+    public static int divideTwoNumbers(int digit, int divider) {
+        var result = 0;
+        var reminder = digit;
+
+        for(var shift = 32; shift>=0 && reminder>divider; shift--){
+            var shiftResult = (long) divider << shift;
+            if (shiftResult > reminder) {
+                continue;
+            }
+            var difference = reminder - (int) shiftResult;
+            result+=1 << shift;
+            reminder = difference;
+        }
+
+        return result;
+    }
+
+    public static void main(String...args) {
+        System.out.println(divideTwoNumbers(Integer.MAX_VALUE,50));
+        System.out.println(divideTwoNumbers(700,50));
+        System.out.println(divideTwoNumbers(3,4));
     }
 
 }

@@ -41,7 +41,7 @@ class KafkaUrlStorageTest {
 
     @Test
     public void shouldAddUrl() {
-        var testUrl = UrlInfo.builder().Id(UUID.randomUUID().toString()).Url("http://sample").build();
+        var testUrl = UrlInfo.builder().id(UUID.randomUUID().toString()).url("http://sample").build();
 
         var sendResult = mock(CompletableFuture.class);
 
@@ -61,7 +61,7 @@ class KafkaUrlStorageTest {
         var id = UUID.randomUUID().toString();
         when(streams.store(any())).thenReturn(store);
 
-        var testUrl = UrlInfo.builder().Id(UUID.randomUUID().toString()).Url("http://sample").build();
+        var testUrl = UrlInfo.builder().id(UUID.randomUUID().toString()).url("http://sample").build();
 
         when(store.get(id)).thenReturn(testUrl);
 

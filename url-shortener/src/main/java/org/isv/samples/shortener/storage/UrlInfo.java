@@ -12,6 +12,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @Jacksonized
 public class UrlInfo {
     @Id
-    private final String Id;
-    private final String Url;
+    private final String id;
+    private final String url;
 }

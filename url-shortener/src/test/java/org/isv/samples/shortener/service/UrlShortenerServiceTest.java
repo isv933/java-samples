@@ -45,7 +45,7 @@ class UrlShortenerServiceTest {
     public void shouldReturnOriginalUrl() {
         var originalUrl = "http://www.googles.com";
         var id = UUID.randomUUID().toString();
-        when(storage.getUrl(id)).thenReturn(Optional.of(UrlInfo.builder().Id(id).Url(originalUrl).build()));
+        when(storage.getUrl(id)).thenReturn(Optional.of(UrlInfo.builder().id(id).url(originalUrl).build()));
 
         Assertions.assertEquals(originalUrl, service.getOriginalUrl(id).orElseThrow());
     }
