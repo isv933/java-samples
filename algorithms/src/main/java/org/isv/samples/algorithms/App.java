@@ -23,9 +23,7 @@ public class App {
     }
 
     public static void main(String...args) {
-        System.out.println(divideTwoNumbers(Integer.MAX_VALUE,50));
-        System.out.println(divideTwoNumbers(700,50));
-        System.out.println(divideTwoNumbers(3,4));
+        SearchIn2DMatrix.test();
     }
 
 }
