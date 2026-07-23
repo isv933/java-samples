@@ -13,6 +13,8 @@ dependencies {
     implementation("org.apache.kafka:kafka-streams")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.apache.kafka:kafka-streams-test-utils")
@@ -20,7 +22,20 @@ dependencies {
 }
 
 tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags("load")
+    }
     finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.register<Test>("loadTest") {
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+
+    useJUnitPlatform {
+        includeTags("load")
+    }
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
