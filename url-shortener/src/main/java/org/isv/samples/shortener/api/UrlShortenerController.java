@@ -5,13 +5,15 @@ import org.isv.samples.shortener.service.UrlShortenerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequiredArgsConstructor
 public class UrlShortenerController {
     private final UrlShortenerService shortenerService;
 
     @PutMapping("/shortener")
-    String createShortUrl(@RequestParam String url) {
+    CompletableFuture<String> createShortUrl(@RequestParam String url) {
         return shortenerService.addUrl(url);
     }
 

@@ -37,8 +37,8 @@ class UrlShortenerServiceTest {
         verify(storage, times(1))
                 .addUrl(argThat(url -> url.getUrl().equals(originalUrl) &&
                         url.getId() != null));
-        Assertions.assertEquals(baseUrl, resultUrl.substring(0, baseUrl.length()));
-        Assertions.assertTrue(Pattern.compile("[^/]+$").matcher(resultUrl).find());
+        Assertions.assertEquals(baseUrl, resultUrl.join().substring(0, baseUrl.length()));
+        Assertions.assertTrue(Pattern.compile("[^/]+$").matcher(resultUrl.join()).find());
     }
 
     @Test

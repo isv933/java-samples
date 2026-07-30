@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "shortener")
 public class ApplicationSettings {
     private String baseUrl;
-    private String storageType;
+    private int numThreads;
     private KafkaSettings kafka = new KafkaSettings();
 }

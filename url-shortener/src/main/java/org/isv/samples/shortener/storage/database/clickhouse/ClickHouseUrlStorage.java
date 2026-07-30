@@ -18,7 +18,7 @@ public class ClickHouseUrlStorage implements UrlStorage {
 
     @Override
     public void addUrl(UrlInfo urlInfo) {
-        var query = String.format("INSERT INTO %s (id,url) SETTINGS async_insert=1, wait_for_async_insert=1 VALUES(:id, :url)",
+        var query = String.format("INSERT INTO %s (id,url) SETTINGS async_insert=1, wait_for_async_insert=1VALUES(:id, :url)",
                 tableNameResolver.getTableName(UrlInfo.class));
 
         jdbcTemplate.update(query, Map.of(
