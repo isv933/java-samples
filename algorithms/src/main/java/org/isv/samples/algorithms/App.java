@@ -4,8 +4,8 @@
 package org.isv.samples.algorithms;
 
 public class App {
-   public static void main(String... args) {
-       ProductArrayExceptSelf.test();
+    public static void main(String... args) {
+        RangeSumQuery2D.test();
     }
 
 }
