@@ -40,11 +40,31 @@ public class LongestRepeatingReplacement {
         return maxLen;
     }
 
+    public static int getMaxLengthForUpperCaseEnglish(String s, int k) {
+        var seen = new int['Z' - 'A' + 1];
+        var freq = 0;
+        var left = 0;
+        var maxLength = 0;
+        for (var right = 0; right < s.length(); right++) {
+            var seenIndex = s.charAt(right) - 'A';
+            seen[seenIndex]++;
+            freq = Math.max(freq, seen[seenIndex]);
+            while (right - left + 1 - freq > k) {
+                var leftIndex = s.charAt(left) - 'A';
+                seen[leftIndex]--;
+                left++;
+            }
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+
     public static void test() {
-        System.out.printf("%d==4\n", getMaxLength("ABAB", 2));
-        System.out.printf("%d==5\n", getMaxLength("AABBB", 2));
-        System.out.printf("%d==3\n", getMaxLength("ABCB", 1));
-        System.out.printf("%d==6\n", getMaxLength("AABBCCC", 3));
+        System.out.printf("%d %d==4\n", getMaxLength("ABAB", 2), getMaxLengthForUpperCaseEnglish("ABAB", 2));
+        System.out.printf("%d %d==5\n", getMaxLength("AABBB", 2), getMaxLengthForUpperCaseEnglish("AABBB", 2));
+        System.out.printf("%d %d==3\n", getMaxLength("ABCB", 1), getMaxLengthForUpperCaseEnglish("ABCB", 1));
+        System.out.printf("%d %d==6\n", getMaxLength("AABBCCC", 3), getMaxLengthForUpperCaseEnglish("AABBCCC", 3));
     }
 
 }

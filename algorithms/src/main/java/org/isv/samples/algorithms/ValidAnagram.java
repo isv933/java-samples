@@ -1,6 +1,8 @@
 package org.isv.samples.algorithms;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class ValidAnagram {
     public static boolean isAnagramUsingSort(String s, String t) {
@@ -12,6 +14,22 @@ public class ValidAnagram {
 
         return Arrays.equals(a, b);
     }
+
+    public static boolean isValidAnagramUsingHeap(String s, String t){
+        var sQueue = new PriorityQueue<Character>(Comparator.comparingInt(x->x));
+        var tQueue = new PriorityQueue<Character>(Comparator.comparingInt(x->x));
+        if (s.length()!=t.length()) {
+            return false;
+        }
+
+        while (!sQueue.isEmpty() && !tQueue.isEmpty()) {
+            if (sQueue.poll()!=tQueue.poll()) {
+                return false;
+            }
+        }
+        return sQueue.isEmpty() && tQueue.isEmpty();
+    }
+
 
     public static boolean isValidAnagram(String s, String t) {
         var ms = normalizeString(s);
@@ -37,5 +55,10 @@ public class ValidAnagram {
         System.out.println(ValidAnagram.isValidAnagram("anagram", "nagaram"));
         System.out.println(ValidAnagram.isValidAnagram("abca", "acab"));
         System.out.println(ValidAnagram.isValidAnagram("abca", "acb"));
+
+        System.out.println(ValidAnagram.isValidAnagramUsingHeap("anagram", "nagaram"));
+        System.out.println(ValidAnagram.isValidAnagramUsingHeap("abca", "acab"));
+        System.out.println(ValidAnagram.isValidAnagramUsingHeap("abca", "acb"));
+
     }
 }
