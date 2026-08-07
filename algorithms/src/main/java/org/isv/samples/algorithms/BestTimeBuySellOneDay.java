@@ -13,14 +13,14 @@ package org.isv.samples.algorithms;
 public class BestTimeBuySellOneDay {
     static class Solution {
         public int maxProfit(int[] prices) {
-            if (prices.length < 2){
+            if (prices.length < 2) {
                 return 0;
             }
             var cash = 0;
             var hold = -prices[0];
 
-            for(var i = 1; i < prices.length; i++){
-                cash = Math.max(cash, hold+prices[i]);
+            for (var i = 1; i < prices.length; i++) {
+                cash = Math.max(cash, hold + prices[i]);
                 hold = Math.max(hold, cash - prices[i]);
             }
 
