@@ -3,14 +3,10 @@
  */
 package org.isv.samples.algorithms;
 
-
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-
 public class App {
 
     public static void main(String... args) {
-
+        LikesCounter.test();
   }
 }
 
