@@ -31,10 +31,10 @@ public class CanBeSorted {
         }
 
         var prev = data[0];
-        var prevParity = prev % 2 == 0;
+        var prevParity = ( prev & 1 ) == 0;
 
         for (var i = 1; i < data.length; i++) {
-            var currentParity = data[i] % 2 == 0;
+            var currentParity = (data[i] & 1) == 0;
             if (currentParity != prevParity) {
                 if (data[i] < prev) {
                     return false;
