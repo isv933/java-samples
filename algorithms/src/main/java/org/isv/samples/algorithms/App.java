@@ -4,10 +4,35 @@
 package org.isv.samples.algorithms;
 
 public class App {
+    static int squareRoot(int number) {
+        return getApproxRoot(number, 0, number);
+    }
+    static int getApproxRoot(int num, int min, int max){
+       if (min > max) {
+            return -1;
+        }
+
+        var mid = (min + max)/2;
+        var midSqrt = mid * mid;
+        if (midSqrt== num) {
+            return mid;
+        }
+
+        if (midSqrt > num) {
+            return getApproxRoot(num, min, mid-1);
+        }
+
+        var great =  getApproxRoot(num, mid+1, max);
+        return great !=-1? great : mid;
+    }
 
     public static void main(String... args) {
-        CanBeSorted.test();
-  }
+        System.out.println(squareRoot(9));
+        System.out.println(squareRoot(10));
+        System.out.println(squareRoot(12));
+        System.out.println(squareRoot(25));
+        System.out.println(squareRoot(1024));
+    }
 }
 
 

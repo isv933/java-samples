@@ -11,9 +11,6 @@ public class AddTwoNumbers {
         testAddTwoNumbers(List.of(5, 6, 4), List.of(4, 3));
         testAddTwoNumbers(List.of(5, 6, 4), List.of(5, 4, 5));
     }
-
-    ;
-
     private static void testAddTwoNumbers(Collection<Integer> num1, Collection<Integer> num2) {
         System.out.printf("%s\n",
                 listNodeToString(

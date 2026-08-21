@@ -5,12 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FindAllAnagrams {
-    public static void test() {
-        System.out.println(Solution.findAnagrams("cbaebabacd", "abc"));
-        System.out.println(Solution.findAnagrams("abab", "ab"));
-        System.out.println(Solution.findAnagrams("dinitrophenylhydrazinetrinitrophenylmethylnitramine", "trinitrophenylmethylnitramine"));
-    }
-
     static class Solution {
         public static List<Integer> findAnagrams(String s, String p) {
             var pattern = initializePattern(p); //it works faster than stream API
@@ -49,6 +43,12 @@ public class FindAllAnagrams {
 
             return result;
         }
+        public static void test() {
+            System.out.println(Solution.findAnagrams("cbaebabacd", "abc"));
+            System.out.println(Solution.findAnagrams("abab", "ab"));
+            System.out.println(Solution.findAnagrams("dinitrophenylhydrazinetrinitrophenylmethylnitramine", "trinitrophenylmethylnitramine"));
+        }
+
     }
 
 }
