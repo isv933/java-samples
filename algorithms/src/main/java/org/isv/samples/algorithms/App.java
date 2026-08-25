@@ -5,6 +5,7 @@ package org.isv.samples.algorithms;
 
 public class App {
     public static void main(String... args) {
+        EncodeStringUsingStack.test();
         EncodeStringUsingRecursion.test();
     }
 }
